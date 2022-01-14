@@ -13,3 +13,14 @@
   background-color: white;
   border: 3px solid black;
 }
+
+.shapes {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-url {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
