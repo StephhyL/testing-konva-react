@@ -4,6 +4,7 @@ import useImage from "use-image";
 import RectangleLayer from "./Layers/Rectangle/RectangleLayer";
 import StarLayer from "./Layers/StarLayer/StarLayer";
 import ImageLayer from "./Layers/Image/ImageLayer";
+import Text from "./Layers/TextLayer/TextLayer";
 
 const Rectangle = ({
   url,
@@ -45,6 +46,14 @@ const Rectangle = ({
       {image && (
         <ImageLayer
           image={image}
+          onSelect={onSelect}
+          shapeRef={shapeRef}
+          onChange={onChange}
+          shapeProps={shapeProps}
+        />
+      )}
+      {shapeName === "text" && (
+        <Text
           onSelect={onSelect}
           shapeRef={shapeRef}
           onChange={onChange}

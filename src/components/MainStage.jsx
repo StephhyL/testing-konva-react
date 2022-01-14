@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Stage, Layer, Line, Text } from "react-konva";
 import { TwitterPicker, CirclePicker } from "react-color";
 import Button from "react-bootstrap/Button";
+import { Rect } from "react-konva";
 
 // import PieChart from "./Chart/PieChart";
 
@@ -74,6 +75,46 @@ const MainStage = () => {
     setURL("");
   };
 
+  //***STAGE GRID ****//
+  const WIDTH = 40;
+  const HEIGHT = 40;
+  
+  const grid = [["white", "white"], ["white", "white"]];
+  
+    const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
+    const startX = Math.floor((-stagePos.x - window.innerWidth) / WIDTH) * WIDTH;
+    const endX =
+      Math.floor((-stagePos.x + window.innerWidth * 2) / WIDTH) * WIDTH;
+  
+    const startY =
+      Math.floor((-stagePos.y - window.innerHeight) / HEIGHT) * HEIGHT;
+    const endY =
+      Math.floor((-stagePos.y + window.innerHeight * 2) / HEIGHT) * HEIGHT;
+  
+    const gridComponents = [];
+    var i = 0;
+    for (var x = startX; x < endX; x += WIDTH) {
+      for (var y = startY; y < endY; y += HEIGHT) {
+        if (i === 4) {
+          i = 0;
+        }
+  
+        const indexX = Math.abs(x / WIDTH) % grid.length;
+        const indexY = Math.abs(y / HEIGHT) % grid[0].length;
+  
+        gridComponents.push(
+          <Rect
+            x={x}
+            y={y}
+            width={WIDTH}
+            height={HEIGHT}
+            fill={grid[indexX][indexY]}
+            stroke="black"
+            strokeWidth={0.3}
+          />
+        );
+      }
+    }
   // ******** RETURN ********************
   return (
     // ******** SIDE BARRRRRR ********************
@@ -126,6 +167,15 @@ const MainStage = () => {
             Add!!
           </Button>
         </div>
+        <div className="texttools">
+          <h3>Text Editor</h3>
+          <Button
+            variant="outline-secondary"
+            onClick={() => handleClick("text", fillColor, strokeColor)}
+          >
+            Add text
+          </Button>
+        </div>
         {/* *****PEN TOOLS DROP DOWN***** */}
         <h5>Select Tool to Draw or Erase</h5>
         <select
@@ -142,6 +192,8 @@ const MainStage = () => {
       {/* // ******** STAGE ******************** */}
       <div className="stage">
         <Stage
+          x={stagePos.x}
+          y={stagePos.y}
           width={1200 || window.innerWidth}
           height={800 || window.innerHeight}
           onMouseDown={checkDeselect}
@@ -150,7 +202,12 @@ const MainStage = () => {
           onMouseDown={tool !== "select" ? handleMouseDown : checkDeselect}
           onMousemove={tool !== "select" ? handleMouseMove : ""}
           onMouseup={tool !== "select" ? handleMouseUp : ""}
+          draggable={tool === "select"}
+          onDragEnd={e => {
+            setStagePos(e.currentTarget.position());
+          }}
         >
+          <Layer>{gridComponents}</Layer>
           <Layer>
             {rectangles.map((rect, i) => {
               return (
