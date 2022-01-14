@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Stage, Layer } from "react-konva";
 import { TwitterPicker, CirclePicker } from "react-color";
+import Button from "react-bootstrap/Button";
 
 import Rectangle from "./Rectangle";
 
 import "./creativity.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import { generateOneRectangle } from "./_helperFunctions";
+import { generateOneRectangle, checkDeselect } from "./_helperFunctions";
 
 const MainStage = () => {
   const [rectangles, setRectangles] = useState([]);
   const [selectedId, selectShape] = useState(null);
-  const [fillColor, setFillColor] = useState("#FF0000");
-  const [strokeColor, setStrokeColor] = useState("");
+  const [fillColor, setFillColor] = useState("");
+  const [strokeColor, setStrokeColor] = useState("black");
 
   const checkDeselect = (e) => {
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -30,24 +32,29 @@ const MainStage = () => {
   return (
     <div className="creativity">
       <div className="sidebar">
-        <button
-          onClick={() => handleClick("rectangle", fillColor, strokeColor)}
-        >
-          Rectangle!!
-        </button>
-        <button onClick={() => handleClick("star", fillColor, strokeColor)}>
-          Star!!
-        </button>
-        <h3>Select Shape Fill Color</h3>
+        <h5>Select Shape Fill Color</h5>
         <CirclePicker
           color={fillColor}
           onChange={(fillColor) => setFillColor(fillColor.hex)}
         />
-        <h3>Select Stroke Color</h3>
+        <h5>Select Stroke Color</h5>
         <CirclePicker
           color={strokeColor}
           onChange={(strokeColor) => setStrokeColor(strokeColor.hex)}
         />
+        <h3>Select a Shape</h3>
+        <Button
+          variant="outline-secondary"
+          onClick={() => handleClick("rectangle", fillColor, strokeColor)}
+        >
+          Rectangle
+        </Button>
+        <Button
+          variant="outline-secondary"
+          onClick={() => handleClick("star", fillColor, strokeColor)}
+        >
+          Star
+        </Button>
       </div>
       <div className="stage">
         <Stage
