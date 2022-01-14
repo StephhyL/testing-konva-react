@@ -3,12 +3,15 @@ import { Stage, Layer, Line, Text } from "react-konva";
 import { TwitterPicker, CirclePicker } from "react-color";
 import Button from "react-bootstrap/Button";
 
+// import PieChart from "./Chart/PieChart";
+
 import Rectangle from "./Rectangle";
 
 import "./creativity.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { generateOneRectangle, checkDeselect } from "./_helperFunctions";
+import PieChart from "./Chart/PieChart";
 
 const MainStage = () => {
   const [rectangles, setRectangles] = useState([]);
@@ -76,6 +79,7 @@ const MainStage = () => {
     // ******** SIDE BARRRRRR ********************
     <div className="creativity">
       <div className="sidebar">
+        <PieChart />
         <div className="select-a-color">
           <h5>Select Shape Fill Color</h5>
           <CirclePicker
@@ -143,7 +147,7 @@ const MainStage = () => {
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
           // className="stage"
-          onMouseDown={tool !== "select" ? handleMouseDown : ""}
+          onMouseDown={tool !== "select" ? handleMouseDown : checkDeselect}
           onMousemove={tool !== "select" ? handleMouseMove : ""}
           onMouseup={tool !== "select" ? handleMouseUp : ""}
         >
@@ -183,7 +187,10 @@ const MainStage = () => {
           </Layer>
         </Stage>
       </div>
-      <div>HELLO THERE: CHAT BOX HERE? SAVE BUTTON HERE?</div>
+      <div>
+        HELLO THERE: CHAT BOX HERE? SAVE BUTTON HERE?
+        <Button variant="primary">Save</Button>
+      </div>
     </div>
   );
 };
