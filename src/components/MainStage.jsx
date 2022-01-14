@@ -70,11 +70,12 @@ const MainStage = () => {
   };
 
   //*** IMAGES */
-  const reset = () => {
+  const resetUrl = () => {
     handleClick("", "", "", url);
     setURL("");
   };
 
+<<<<<<< HEAD
   //***STAGE GRID ****//
   const WIDTH = 40;
   const HEIGHT = 40;
@@ -115,6 +116,14 @@ const MainStage = () => {
         );
       }
     }
+=======
+  const resetBoard = () => {
+    setRectangles([]);
+    setLines([]);
+    setTool("select");
+  };
+
+>>>>>>> ffef12b4d27be1870989189b188e4042d6fc9846
   // ******** RETURN ********************
   return (
     // ******** SIDE BARRRRRR ********************
@@ -163,7 +172,7 @@ const MainStage = () => {
               onChange={(e) => setURL(e.target.value)}
             />
           </form>
-          <Button variant="outline-secondary" onClick={() => reset()}>
+          <Button variant="outline-secondary" onClick={() => resetUrl()}>
             Add!!
           </Button>
         </div>
@@ -247,6 +256,9 @@ const MainStage = () => {
       <div>
         HELLO THERE: CHAT BOX HERE? SAVE BUTTON HERE?
         <Button variant="primary">Save</Button>
+        <Button variant="danger" onClick={resetBoard}>
+          Reset Board
+        </Button>
       </div>
     </div>
   );

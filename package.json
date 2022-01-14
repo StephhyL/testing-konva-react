@@ -16,6 +16,7 @@
     "react-konva": "*",
     "react-konva-utils": "^0.2.0",
     "react-rainbow-components": "^1.29.0",
+    "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "roughjs": "^4.5.2",
     "use-image": "^1.0.8",
