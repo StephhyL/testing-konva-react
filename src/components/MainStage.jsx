@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Stage, Layer } from "react-konva";
+import { useState, useRef } from "react";
+import { Stage, Layer, Line, Text } from "react-konva";
 import { TwitterPicker, CirclePicker } from "react-color";
 import Button from "react-bootstrap/Button";
 
@@ -17,6 +17,11 @@ const MainStage = () => {
   const [strokeColor, setStrokeColor] = useState("black");
   const [url, setURL] = useState("");
 
+  // PEN TOOLS
+  const [tool, setTool] = useState("pen");
+  const [lines, setLines] = useState([]);
+  const isDrawing = useRef(false);
+
   const checkDeselect = (e) => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
@@ -30,7 +35,39 @@ const MainStage = () => {
     setRectangles([...rectangles, newRectangle]);
   };
 
+  // ****************** PEN TOOLS FUNCTIONS ****************
+  const handleMouseDown = (e) => {
+    isDrawing.current = true;
+    const pos = e.target.getStage().getPointerPosition();
+    setLines([
+      ...lines,
+      { tool, points: [pos.x, pos.y], strokeColor: strokeColor },
+    ]);
+  };
+
+  const handleMouseMove = (e) => {
+    // no drawing - skipping
+    if (!isDrawing.current) {
+      return;
+    }
+    const stage = e.target.getStage();
+    const point = stage.getPointerPosition();
+    let lastLine = lines[lines.length - 1];
+    // add point
+    lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+    // replace last
+    lines.splice(lines.length - 1, 1, lastLine);
+    setLines(lines.concat());
+  };
+
+  const handleMouseUp = () => {
+    isDrawing.current = false;
+  };
+
+  // ******** RETURN ********************
   return (
+    // ******** SIDE BARRRRRR ********************
     <div className="creativity">
       <div className="sidebar">
         <div className="select-a-color">
@@ -82,7 +119,20 @@ const MainStage = () => {
             Add!!
           </Button>
         </div>
+        {/* *****PEN TOOLS DROP DOWN***** */}
+        <h5>Select Tool to Draw or Erase</h5>
+        <select
+          value={tool}
+          onChange={(e) => {
+            setTool(e.target.value);
+          }}
+        >
+          <option value="select">Select</option>
+          <option value="pen">Pen</option>
+          <option value="eraser">Eraser</option>
+        </select>
       </div>
+      {/* // ******** STAGE ******************** */}
       <div className="stage">
         <Stage
           width={window.innerWidth}
@@ -90,6 +140,9 @@ const MainStage = () => {
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
           // className="stage"
+          onMouseDown={tool !== "select" ? handleMouseDown : ""}
+          onMousemove={tool !== "select" ? handleMouseMove : ""}
+          onMouseup={tool !== "select" ? handleMouseUp : ""}
         >
           <Layer>
             {rectangles.map((rect, i) => {
@@ -111,6 +164,19 @@ const MainStage = () => {
                 />
               );
             })}
+            {lines.map((line, i) => (
+              <Line
+                key={i}
+                points={line.points}
+                stroke={line.strokeColor}
+                strokeWidth={5}
+                tension={0.5}
+                lineCap="round"
+                globalCompositeOperation={
+                  line.tool === "eraser" ? "destination-out" : "source-over"
+                }
+              />
+            ))}
           </Layer>
         </Stage>
       </div>
