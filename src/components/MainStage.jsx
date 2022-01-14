@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Stage, Layer } from "react-konva";
-import { TwitterPicker, GithubPicker } from "react-color";
+import { TwitterPicker, CirclePicker } from "react-color";
 
 import Rectangle from "./Rectangle";
+
+import "./creativity.css";
 
 import { generateOneRectangle } from "./_helperFunctions";
 
@@ -26,52 +28,58 @@ const MainStage = () => {
   };
 
   return (
-    <>
-      <button onClick={() => handleClick("rectangle", fillColor, strokeColor)}>
-        Rectangle!!
-      </button>
-      <button onClick={() => handleClick("star", fillColor, strokeColor)}>
-        Star!!
-      </button>
-      <h3>Select Shape Fill Color</h3>
-      <TwitterPicker
-        color={fillColor}
-        onChange={(fillColor) => setFillColor(fillColor.hex)}
-      />
-      <h3>Select Stroke Color</h3>
-      <GithubPicker
-        color={strokeColor}
-        onChange={(strokeColor) => setStrokeColor(strokeColor.hex)}
-      />
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={checkDeselect}
-        onTouchStart={checkDeselect}
-        className="stage"
-      >
-        <Layer>
-          {rectangles.map((rect, i) => {
-            return (
-              <Rectangle
-                shapeName={rect.shape}
-                key={i}
-                shapeProps={rect}
-                isSelected={rect.id === selectedId}
-                onSelect={() => {
-                  selectShape(rect.id);
-                }}
-                onChange={(newAttrs) => {
-                  const rects = rectangles.slice();
-                  rects[i] = newAttrs;
-                  setRectangles(rects);
-                }}
-              />
-            );
-          })}
-        </Layer>
-      </Stage>
-    </>
+    <div className="creativity">
+      <div className="sidebar">
+        <button
+          onClick={() => handleClick("rectangle", fillColor, strokeColor)}
+        >
+          Rectangle!!
+        </button>
+        <button onClick={() => handleClick("star", fillColor, strokeColor)}>
+          Star!!
+        </button>
+        <h3>Select Shape Fill Color</h3>
+        <CirclePicker
+          color={fillColor}
+          onChange={(fillColor) => setFillColor(fillColor.hex)}
+        />
+        <h3>Select Stroke Color</h3>
+        <CirclePicker
+          color={strokeColor}
+          onChange={(strokeColor) => setStrokeColor(strokeColor.hex)}
+        />
+      </div>
+      <div className="stage">
+        <Stage
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
+          // className="stage"
+        >
+          <Layer>
+            {rectangles.map((rect, i) => {
+              return (
+                <Rectangle
+                  shapeName={rect.shape}
+                  key={i}
+                  shapeProps={rect}
+                  isSelected={rect.id === selectedId}
+                  onSelect={() => {
+                    selectShape(rect.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const rects = rectangles.slice();
+                    rects[i] = newAttrs;
+                    setRectangles(rects);
+                  }}
+                />
+              );
+            })}
+          </Layer>
+        </Stage>
+      </div>
+    </div>
   );
 };
 
