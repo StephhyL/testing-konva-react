@@ -1,5 +1,5 @@
 import React from "react";
-import { Stage, Layer, Rect } from "react-konva";
+import { Rect } from "react-konva";
 
 const RectangleLayer = (props) => {
   const { onSelect, shapeRef, onChange, shapeProps } = props;

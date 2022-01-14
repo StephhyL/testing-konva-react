@@ -4,7 +4,7 @@ const randomNum = () => {
   return num.toString();
 };
 
-export const generateOneRectangle = (shape, fillColor, strokeColor) => {
+export const generateOneRectangle = (shape, fillColor, strokeColor, url) => {
   return {
     x: 150,
     y: 150,
@@ -14,5 +14,6 @@ export const generateOneRectangle = (shape, fillColor, strokeColor) => {
     fill: fillColor,
     id: randomNum(),
     shape: shape,
+    url: url,
   };
 };

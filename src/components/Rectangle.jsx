@@ -1,15 +1,19 @@
 import { useEffect, useRef } from "react";
 import { Transformer } from "react-konva";
+import useImage from "use-image";
 import RectangleLayer from "./Layers/Rectangle/RectangleLayer";
 import StarLayer from "./Layers/StarLayer/StarLayer";
+import ImageLayer from "./Layers/Image/ImageLayer";
 
 const Rectangle = ({
+  url,
   shapeName,
   shapeProps,
   isSelected,
   onSelect,
   onChange,
 }) => {
+  const [image] = useImage(url, "Anonimus");
   const shapeRef = useRef();
   const trRef = useRef();
 
@@ -32,6 +36,15 @@ const Rectangle = ({
       )}
       {shapeName === "star" && (
         <StarLayer
+          onSelect={onSelect}
+          shapeRef={shapeRef}
+          onChange={onChange}
+          shapeProps={shapeProps}
+        />
+      )}
+      {image && (
+        <ImageLayer
+          image={image}
           onSelect={onSelect}
           shapeRef={shapeRef}
           onChange={onChange}

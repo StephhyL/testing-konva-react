@@ -15,6 +15,7 @@ const MainStage = () => {
   const [selectedId, selectShape] = useState(null);
   const [fillColor, setFillColor] = useState("");
   const [strokeColor, setStrokeColor] = useState("black");
+  const [url, setURL] = useState("");
 
   const checkDeselect = (e) => {
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -24,7 +25,7 @@ const MainStage = () => {
   };
 
   const handleClick = (shape, fillColor, strokeColor) => {
-    let newRectangle = generateOneRectangle(shape, fillColor, strokeColor);
+    let newRectangle = generateOneRectangle(shape, fillColor, strokeColor, url);
     console.log("newRectange ====> ", newRectangle);
     setRectangles([...rectangles, newRectangle]);
   };
@@ -55,6 +56,23 @@ const MainStage = () => {
         >
           Star
         </Button>
+        <form
+          autoComplete="off"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <input
+            name="url"
+            type="text"
+            placeholder="Enter URL of Image"
+            value={url}
+            onChange={(e) => setURL(e.target.value)}
+          />
+        </form>
+        <Button confirm="confirm" onClick={() => handleClick("", "", "", url)}>
+          Add!!
+        </Button>
       </div>
       <div className="stage">
         <Stage
@@ -69,6 +87,7 @@ const MainStage = () => {
               return (
                 <Rectangle
                   shapeName={rect.shape}
+                  url={rect.url}
                   key={i}
                   shapeProps={rect}
                   isSelected={rect.id === selectedId}
